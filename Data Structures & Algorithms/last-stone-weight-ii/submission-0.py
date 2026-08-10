@@ -1,0 +1,20 @@
+class Solution:
+    def lastStoneWeightII(self, stones: List[int]) -> int:
+        # if total sum is X ,then one group has (X - S) and another has
+        # S - (X - S) = 2S - X   
+        # |X - 2S| we have to try and bring the diff cloasest to zero. 
+
+        total = sum(stones)
+        target = total // 2
+
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+        for stone in stones:
+            for s in range(target,stone - 1,-1):
+                dp[s] = dp[s] or dp[s - stone]
+
+        for s in range(target,-1,-1):
+
+            if dp[s]:
+                return total - 2 * s
